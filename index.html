@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1a1510">
+<title>Thaizen Wellness & Spa</title>
+<link rel="stylesheet" href="css/app.css">
+<style>
+/* ── HOME-SPECIFIC ── */
+body { background: var(--dark); }
+.app-shell { background: var(--dark); }
+
+.hero {
+  background: var(--dark);
+  padding: 52px 24px 32px;
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+  align-items: center; text-align: center;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 90% 70% at 50% 20%, rgba(184,144,42,0.13) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-lotus {
+  font-size: 3.2rem; margin-bottom: 14px;
+  animation: floatLotus 5s ease-in-out infinite;
+  position: relative; z-index: 1;
+}
+@keyframes floatLotus {
+  0%,100% { transform: translateY(0) rotate(-2deg); }
+  50%      { transform: translateY(-10px) rotate(2deg); }
+}
+.hero-brand {
+  position: relative; z-index: 1;
+  margin-bottom: 6px;
+}
+.hero-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.6rem; font-weight: 300;
+  color: var(--gold-p); letter-spacing: 0.2em;
+  line-height: 1;
+}
+.hero-sub {
+  font-size: 0.62rem; letter-spacing: 0.24em; text-transform: uppercase;
+  color: var(--gold-l); opacity: 0.55; margin-top: 5px;
+}
+.hero-tagline {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem; font-style: italic;
+  color: rgba(245,236,214,0.45); margin-top: 12px;
+  position: relative; z-index: 1;
+}
+
+/* body area */
+.home-body {
+  background: var(--dark2);
+  border-radius: 24px 24px 0 0;
+  padding: 28px 20px 20px;
+  flex: 1;
+  margin-top: 4px;
+}
+.greeting { font-size: 0.72rem; color: var(--clay); opacity: 0.6; margin-bottom: 3px; }
+.home-heading {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.65rem; font-weight: 300; color: var(--gold-p);
+  margin-bottom: 22px; line-height: 1.2;
+}
+.home-heading em { font-style: italic; color: var(--gold); }
+
+/* CTA strip */
+.cta-strip {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+  margin-bottom: 22px;
+}
+.cta-card {
+  background: var(--dark3); border-radius: var(--r);
+  padding: 18px 14px; cursor: pointer;
+  border: 1px solid rgba(184,144,42,0.1);
+  transition: all 0.2s; text-decoration: none;
+  display: block; position: relative; overflow: hidden;
+}
+.cta-card::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(184,144,42,0.06); opacity: 0;
+  transition: opacity 0.2s;
+}
+.cta-card:hover::after, .cta-card:active::after { opacity: 1; }
+.cta-card.span2 { grid-column: span 2; background: var(--gold); border-color: var(--gold); }
+.cta-icon { font-size: 1.35rem; margin-bottom: 9px; }
+.cta-title {
+  font-size: 0.85rem; font-weight: 500; color: var(--gold-p);
+  margin-bottom: 3px; display: block;
+}
+.cta-card.span2 .cta-title { color: var(--dark); font-size: 0.95rem; }
+.cta-sub { font-size: 0.68rem; color: var(--clay); opacity: 0.6; }
+.cta-card.span2 .cta-sub { color: rgba(26,21,16,0.6); opacity: 1; }
+.cta-arrow { position: absolute; top: 14px; right: 14px; font-size: 0.85rem; color: var(--gold); opacity: 0.4; }
+.cta-card.span2 .cta-arrow { color: var(--dark); }
+
+/* promo banner */
+.promo-strip {
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, var(--dark3), rgba(184,144,42,0.06));
+  border: 1px solid rgba(184,144,42,0.18);
+  border-radius: var(--r); padding: 13px 14px; margin-bottom: 22px;
+  cursor: pointer; text-decoration: none;
+}
+.promo-badge {
+  background: var(--gold); color: var(--dark);
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.1em;
+  padding: 4px 10px; border-radius: 4px; white-space: nowrap;
+  text-transform: uppercase;
+}
+.promo-strip-text { flex: 1; }
+.promo-strip-text strong { display: block; font-size: 0.82rem; color: var(--gold-l); margin-bottom: 2px; }
+.promo-strip-text span  { font-size: 0.7rem; color: var(--clay); opacity: 0.65; }
+
+/* popular */
+.section-lbl {
+  font-size: 0.62rem; letter-spacing: 0.15em; text-transform: uppercase;
+  color: var(--clay); opacity: 0.45; margin-bottom: 12px;
+}
+.popular-list { display: flex; flex-direction: column; gap: 8px; }
+.pop-item {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--dark3); border-radius: var(--r-sm);
+  padding: 13px 14px; cursor: pointer; text-decoration: none;
+  border: 1px solid rgba(255,255,255,0.04);
+  transition: border-color 0.2s;
+}
+.pop-item:hover { border-color: rgba(184,144,42,0.25); }
+.pop-icon { font-size: 1.3rem; width: 34px; text-align: center; flex-shrink: 0; }
+.pop-info { flex: 1; }
+.pop-name { font-size: 0.85rem; color: var(--gold-p); font-weight: 400; margin-bottom: 2px; }
+.pop-meta { font-size: 0.7rem; color: var(--clay); opacity: 0.55; }
+.pop-price { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--gold); white-space: nowrap; }
+
+/* bottom nav for dark bg */
+.bottom-nav {
+  background: rgba(26,21,16,0.97);
+  border-top: 1px solid rgba(184,144,42,0.1);
+}
+.bn-item { color: rgba(255,255,255,0.28); }
+.bn-item.active { color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="hero anim-fadeup">
+    <div class="hero-lotus">🪷</div>
+    <div class="hero-brand">
+      <div class="hero-name">THAIZEN</div>
+      <div class="hero-sub">Wellness &amp; Spa · George Town, Penang</div>
+    </div>
+    <div class="hero-tagline">Restore your stillness</div>
+  </div>
+
+  <div class="home-body">
+    <div class="greeting">Good day ✨</div>
+    <div class="home-heading anim-fadeup s1">What would you<br><em>like today?</em></div>
+
+    <div class="cta-strip anim-fadeup s2">
+      <a href="pages/book.html" class="cta-card span2">
+        <div class="cta-icon">🗓️</div>
+        <span class="cta-title">Book a Session</span>
+        <div class="cta-sub">Choose treatment, date &amp; time</div>
+        <span class="cta-arrow">→</span>
+      </a>
+      <a href="pages/services.html" class="cta-card">
+        <div class="cta-icon">🌿</div>
+        <span class="cta-title">Services</span>
+        <div class="cta-sub">Browse all 19 treatments</div>
+        <span class="cta-arrow">→</span>
+      </a>
+      <a href="pages/my-bookings.html" class="cta-card">
+        <div class="cta-icon">📋</div>
+        <span class="cta-title">My Bookings</span>
+        <div class="cta-sub">Past &amp; upcoming</div>
+        <span class="cta-arrow">→</span>
+      </a>
+    </div>
+
+    <a href="pages/book.html" class="promo-strip anim-fadeup s3">
+      <div class="promo-badge">Promo</div>
+      <div class="promo-strip-text">
+        <strong>20% off this week!</strong>
+        <span>Use code THAIZEN20 at checkout</span>
+      </div>
+      <span style="color:var(--gold-l);font-size:0.9rem">→</span>
+    </a>
+
+    <div class="section-lbl anim-fadeup s4">Popular Treatments</div>
+    <div class="popular-list anim-fadeup s4">
+      <a href="pages/book.html" class="pop-item" onclick="setState({service:'Thai Traditional Massage',serviceIcon:'🧘',serviceCn:'泰式传统按摩',price:95,dur:'60 mins'})">
+        <div class="pop-icon">🧘</div>
+        <div class="pop-info">
+          <div class="pop-name">Thai Traditional Massage</div>
+          <div class="pop-meta">60 – 120 mins · 泰式传统按摩</div>
+        </div>
+        <div class="pop-price">RM 95</div>
+      </a>
+      <a href="pages/book.html" class="pop-item" onclick="setState({service:'Foot Massage',serviceIcon:'🦶',serviceCn:'足部按摩',price:69,dur:'60 mins'})">
+        <div class="pop-icon">🦶</div>
+        <div class="pop-info">
+          <div class="pop-name">Foot Massage</div>
+          <div class="pop-meta">60 mins · 足部按摩</div>
+        </div>
+        <div class="pop-price">RM 69</div>
+      </a>
+      <a href="pages/book.html" class="pop-item" onclick="setState({service:'Hot Stone Massage',serviceIcon:'🪨',serviceCn:'热石按摩',price:165,dur:'60 mins'})">
+        <div class="pop-icon">🪨</div>
+        <div class="pop-info">
+          <div class="pop-name">Hot Stone Massage</div>
+          <div class="pop-meta">60 – 120 mins · 热石按摩</div>
+        </div>
+        <div class="pop-price">RM 165</div>
+      </a>
+      <a href="pages/book.html" class="pop-item" onclick="setState({service:'Aromatherapy Massage',serviceIcon:'🌸',serviceCn:'香薰按摩',price:120,dur:'60 mins'})">
+        <div class="pop-icon">🌸</div>
+        <div class="pop-info">
+          <div class="pop-name">Aromatherapy Massage</div>
+          <div class="pop-meta">60 – 120 mins · 香薰按摩</div>
+        </div>
+        <div class="pop-price">RM 120</div>
+      </a>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item active" href="index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item" href="pages/services.html"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item" href="pages/book.html"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item" href="pages/my-bookings.html"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+
+</div>
+<div class="toast" id="toast"></div>
+<script src="js/app.js"></script>
+</body>
+</html>

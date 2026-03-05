@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/book",        "destination": "/pages/book.html" },
+    { "source": "/services",    "destination": "/pages/services.html" },
+    { "source": "/confirm",     "destination": "/pages/confirm.html" },
+    { "source": "/success",     "destination": "/pages/success.html" },
+    { "source": "/my-bookings", "destination": "/pages/my-bookings.html" }
+  ]
+}
