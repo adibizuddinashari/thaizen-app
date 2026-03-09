@@ -25,9 +25,10 @@ body { background: var(--dark); }
   pointer-events: none;
 }
 .hero-lotus {
-  font-size: 3.2rem; margin-bottom: 14px;
+  width: 96px; height: 96px; margin-bottom: 14px;
   animation: floatLotus 5s ease-in-out infinite;
   position: relative; z-index: 1;
+  object-fit: contain;
 }
 @keyframes floatLotus {
   0%,100% { transform: translateY(0) rotate(-2deg); }
@@ -35,6 +36,7 @@ body { background: var(--dark); }
 }
 .hero-brand {
   position: relative; z-index: 1;
+  object-fit: contain;
   margin-bottom: 6px;
 }
 .hero-name {
@@ -52,6 +54,7 @@ body { background: var(--dark); }
   font-size: 1rem; font-style: italic;
   color: rgba(245,236,214,0.45); margin-top: 12px;
   position: relative; z-index: 1;
+  object-fit: contain;
 }
 
 /* body area */
@@ -151,7 +154,7 @@ body { background: var(--dark); }
 <div class="app-shell">
 
   <div class="hero anim-fadeup">
-    <div class="hero-lotus">🪷</div>
+    <img class="hero-lotus" src="assets/thaizen logo.webp" alt="Thaizen">
     <div class="hero-brand">
       <div class="hero-name">THAIZEN</div>
       <div class="hero-sub">Wellness &amp; Spa · George Town, Penang</div>
