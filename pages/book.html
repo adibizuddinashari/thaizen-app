@@ -134,6 +134,25 @@
 #panel-service { display: block; }
 #panel-datetime { display: none; }
 .step-panel { padding-bottom: 20px; }
+
+/* ── FLOATING CTA ── */
+.sticky-footer {
+  position: fixed;
+  bottom: 68px; left: 50%;
+  transform: translateX(-50%) translateY(calc(100% + 80px));
+  width: 100%; max-width: 480px;
+  padding: 10px 20px 4px;
+  z-index: 250;
+  transition: transform 0.36s cubic-bezier(0.22,1,0.36,1);
+  pointer-events: none;
+}
+.sticky-footer.visible {
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.sticky-footer .btn {
+  box-shadow: 0 8px 28px rgba(184,144,42,0.35), 0 2px 8px rgba(0,0,0,0.12);
+}
 </style>
 <script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 </head>
@@ -165,7 +184,7 @@
   </div>
 
   <!-- PANEL: SERVICE -->
-  <div id="panel-service" class="step-panel">
+  <div id="panel-service" class="step-panel" style="padding-bottom: 140px;">
     <div class="cat-scroll">
       <div class="cat-chip active" onclick="filterCat(this,'all')">All</div>
       <div class="cat-chip" onclick="filterCat(this,'basic')">Basic</div>
@@ -392,15 +411,19 @@ function pickTime(el, time){
 // ── CTA ──
 function updateCta() {
   const cta = document.getElementById('mainCta');
+  const footer = cta.closest('.sticky-footer');
   if (activePanel === 'service') {
     if (S.service) {
-      cta.textContent = `Next: Pick Date & Time →`;
+      cta.textContent = 'Next: Pick Date & Time →';
       cta.disabled = false;
+      footer.classList.add('visible');
     } else {
       cta.textContent = 'Select a treatment to continue';
       cta.disabled = true;
+      footer.classList.remove('visible');
     }
   } else {
+    footer.classList.add('visible');
     if (S.date && S.time) {
       cta.textContent = 'Continue to Your Details →';
       cta.disabled = false;
