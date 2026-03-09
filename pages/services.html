@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Services — Thaizen</title>
+<link rel="stylesheet" href="../css/app.css">
+<style>
+.svc-hero {
+  background: var(--stone); padding: 20px 20px 24px;
+  display: flex; flex-direction: column;
+}
+.svc-hero-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--gold-p); margin-bottom: 4px; }
+.svc-hero-sub   { font-size: 0.72rem; color: var(--clay); opacity: 0.65; }
+
+.cat-tabs {
+  display: flex; background: var(--white);
+  border-bottom: 1px solid var(--mist);
+  position: sticky; top: 57px; z-index: 90;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+}
+.cat-tabs::-webkit-scrollbar { display: none; }
+.cat-tab-btn {
+  padding: 13px 18px; white-space: nowrap; flex-shrink: 0;
+  font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--bark); border: none; background: none;
+  border-bottom: 2px solid transparent; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+}
+.cat-tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+.svc-section { padding: 0 20px; }
+.svc-section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem; font-weight: 400; color: var(--stone);
+  padding: 18px 0 10px; border-bottom: 1px solid var(--mist); margin-bottom: 12px;
+  display: flex; justify-content: space-between; align-items: baseline;
+}
+.svc-section-cn { font-size: 0.72rem; color: var(--bark); opacity: 0.5; font-style: italic; }
+
+.svc-item {
+  display: flex; align-items: center; gap: 13px;
+  padding: 13px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+  cursor: pointer; text-decoration: none;
+}
+.svc-item:last-child { border-bottom: none; }
+.svc-item:hover .svc-item-icon { transform: scale(1.1); }
+.svc-item-icon { font-size: 1.3rem; width: 36px; text-align: center; flex-shrink: 0; transition: transform 0.2s; }
+.svc-item-body { flex: 1; }
+.svc-item-name { font-size: 0.86rem; color: var(--stone); font-weight: 500; margin-bottom: 2px; }
+.svc-item-cn   { font-size: 0.68rem; color: var(--bark); opacity: 0.5; font-style: italic; }
+.svc-item-prices { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; }
+.svc-price-row  { display: flex; gap: 8px; align-items: center; }
+.svc-dur-lbl    { font-size: 0.6rem; color: var(--bark); opacity: 0.5; }
+.svc-price-num  { font-family: 'Cormorant Garamond', serif; font-size: 1rem; color: var(--gold); }
+
+.book-btn {
+  width: calc(100% - 40px); margin: 0 20px 20px;
+  padding: 14px; background: var(--gold); color: var(--dark);
+  border: none; border-radius: var(--r-sm); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.8rem;
+  letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500;
+  transition: all 0.22s; position: sticky; bottom: 72px;
+  box-shadow: 0 4px 20px rgba(184,144,42,0.3);
+}
+.book-btn:hover { background: var(--gold-l); transform: translateY(-1px); }
+
+.sst-note {
+  margin: 0 20px 80px; padding: 12px 14px;
+  background: var(--gold-p); border-radius: var(--r-sm);
+  display: flex; gap: 10px; align-items: center;
+}
+.sst-note p { font-size: 0.72rem; color: var(--bark); line-height: 1.5; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="top-bar">
+    <button class="top-bar-back" onclick="history.length>1?history.back():location.href='../index.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      Back
+    </button>
+    <div class="top-bar-title">Our Services</div>
+    <div class="top-bar-action"></div>
+  </div>
+
+  <div class="svc-hero">
+    <div class="svc-hero-title">All Treatments</div>
+    <div class="svc-hero-sub">19 treatments · All prices inclusive of 8% SST</div>
+  </div>
+
+  <div class="cat-tabs">
+    <button class="cat-tab-btn active" onclick="scrollTo('sec-basic',this)">Basic</button>
+    <button class="cat-tab-btn" onclick="scrollTo('sec-special',this)">Special</button>
+    <button class="cat-tab-btn" onclick="scrollTo('sec-packages',this)">Packages</button>
+    <button class="cat-tab-btn" onclick="scrollTo('sec-other',this)">Other</button>
+  </div>
+
+  <div id="sec-basic" class="svc-section">
+    <div class="svc-section-title">Basic Harmony <span class="svc-section-cn">基本局部护理</span></div>
+    <a href="book.html" class="svc-item" onclick="quickBook('Foot Massage','🦶','足部按摩',69)">
+      <div class="svc-item-icon">🦶</div>
+      <div class="svc-item-body"><div class="svc-item-name">Foot Massage</div><div class="svc-item-cn">足部按摩</div></div>
+      <div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 69</span></div></div>
+    </a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Thai Traditional Massage','🧘','泰式传统按摩',95)">
+      <div class="svc-item-icon">🧘</div>
+      <div class="svc-item-body"><div class="svc-item-name">Thai Traditional Massage</div><div class="svc-item-cn">泰式传统按摩</div></div>
+      <div class="svc-item-prices">
+        <div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 95</span></div>
+        <div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 130</span></div>
+        <div class="svc-price-row"><span class="svc-dur-lbl">120 min</span><span class="svc-price-num">RM 165</span></div>
+      </div>
+    </a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Oil Massage','💆','精油按摩',105)">
+      <div class="svc-item-icon">💆</div>
+      <div class="svc-item-body"><div class="svc-item-name">Oil Massage</div><div class="svc-item-cn">精油按摩</div></div>
+      <div class="svc-item-prices">
+        <div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 105</span></div>
+        <div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 140</span></div>
+        <div class="svc-price-row"><span class="svc-dur-lbl">120 min</span><span class="svc-price-num">RM 180</span></div>
+      </div>
+    </a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Aromatherapy Massage','🌸','香薰按摩',120)">
+      <div class="svc-item-icon">🌸</div>
+      <div class="svc-item-body"><div class="svc-item-name">Aromatherapy Massage</div><div class="svc-item-cn">香薰按摩</div></div>
+      <div class="svc-item-prices">
+        <div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 120</span></div>
+        <div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 165</span></div>
+        <div class="svc-price-row"><span class="svc-dur-lbl">120 min</span><span class="svc-price-num">RM 205</span></div>
+      </div>
+    </a>
+  </div>
+
+  <div id="sec-special" class="svc-section">
+    <div class="svc-section-title">Special Treatment <span class="svc-section-cn">特别护理</span></div>
+    <a href="book.html" class="svc-item" onclick="quickBook('Sports Massage','💪','运动按摩',155)"><div class="svc-item-icon">💪</div><div class="svc-item-body"><div class="svc-item-name">Sports Massage</div><div class="svc-item-cn">运动按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 155</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Hot Candle Massage','🕯️','热蜡按摩',175)"><div class="svc-item-icon">🕯️</div><div class="svc-item-body"><div class="svc-item-name">Hot Candle Massage</div><div class="svc-item-cn">热蜡按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 175</span></div><div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 255</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Aromatherapy Hot Oil','🌺','香薰热精油按摩',140)"><div class="svc-item-icon">🌺</div><div class="svc-item-body"><div class="svc-item-name">Aromatherapy Hot Oil Massage</div><div class="svc-item-cn">香薰热精油按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 140</span></div><div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 190</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Hot Stone Massage','🪨','热石按摩',165)"><div class="svc-item-icon">🪨</div><div class="svc-item-body"><div class="svc-item-name">Hot Stone Massage</div><div class="svc-item-cn">热石按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 165</span></div><div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 215</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Thai Balm Massage','🌿','泰式万金油按摩',105)"><div class="svc-item-icon">🌿</div><div class="svc-item-body"><div class="svc-item-name">Thai Balm Massage</div><div class="svc-item-cn">泰式万金油按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">60 min</span><span class="svc-price-num">RM 105</span></div><div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 145</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Thai Herbal Compress','🪴','药草按压泰式按摩',95)"><div class="svc-item-icon">🪴</div><div class="svc-item-body"><div class="svc-item-name">Thai Herbal Compress Massage</div><div class="svc-item-cn">药草按压泰式按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">45 min</span><span class="svc-price-num">RM 95</span></div><div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 180</span></div></div></a>
+  </div>
+
+  <div id="sec-packages" class="svc-section">
+    <div class="svc-section-title">Packages <span class="svc-section-cn">附加配套</span></div>
+    <a href="book.html" class="svc-item" onclick="quickBook('Package A — Foot + Shoulder','📦','足部 + 肩部按摩',108)"><div class="svc-item-icon">📦</div><div class="svc-item-body"><div class="svc-item-name">Package A — Foot + Shoulder & Head</div><div class="svc-item-cn">足部按摩 + 肩部 + 头部按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">90 min</span><span class="svc-price-num">RM 108</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Package B — Foot + Thai','📦','足部 + 泰式按摩',148)"><div class="svc-item-icon">📦</div><div class="svc-item-body"><div class="svc-item-name">Package B — Foot + Thai Traditional</div><div class="svc-item-cn">足部按摩 + 泰式传统按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">120 min</span><span class="svc-price-num">RM 148</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Package C — Foot + Oil','📦','足部 + 精油按摩',158)"><div class="svc-item-icon">📦</div><div class="svc-item-body"><div class="svc-item-name">Package C — Foot + Oil Massage</div><div class="svc-item-cn">足部按摩 + 精油按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">120 min</span><span class="svc-price-num">RM 158</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Package D — Foot + Aroma','📦','足部 + 香薰按摩',168)"><div class="svc-item-icon">📦</div><div class="svc-item-body"><div class="svc-item-name">Package D — Foot + Aromatherapy</div><div class="svc-item-cn">足部按摩 + 香薰按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">120 min</span><span class="svc-price-num">RM 168</span></div></div></a>
+  </div>
+
+  <div id="sec-other" class="svc-section">
+    <div class="svc-section-title">Other Treatments <span class="svc-section-cn">其它护理</span></div>
+    <a href="book.html" class="svc-item" onclick="quickBook('Body Scrub','✨','全身磨砂护理',88)"><div class="svc-item-icon">✨</div><div class="svc-item-body"><div class="svc-item-name">Body Scrub</div><div class="svc-item-cn">全身磨砂护理</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">30 min</span><span class="svc-price-num">RM 88</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Shoulder Massage','💆','肩部按摩',50)"><div class="svc-item-icon">💆</div><div class="svc-item-body"><div class="svc-item-name">Shoulder Massage</div><div class="svc-item-cn">肩部按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">30 min</span><span class="svc-price-num">RM 50</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Head Massage','🧠','头部按摩',50)"><div class="svc-item-icon">🧠</div><div class="svc-item-body"><div class="svc-item-name">Head Massage</div><div class="svc-item-cn">头部按摩</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">30 min</span><span class="svc-price-num">RM 50</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Cupping','🫧','拔罐',50)"><div class="svc-item-icon">🫧</div><div class="svc-item-body"><div class="svc-item-name">Cupping</div><div class="svc-item-cn">拔罐</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">30 min</span><span class="svc-price-num">RM 50</span></div></div></a>
+    <a href="book.html" class="svc-item" onclick="quickBook('Ear Candle','🕯️','耳烛护理',50)"><div class="svc-item-icon">🕯️</div><div class="svc-item-body"><div class="svc-item-name">Ear Candle</div><div class="svc-item-cn">耳烛护理</div></div><div class="svc-item-prices"><div class="svc-price-row"><span class="svc-dur-lbl">15 min</span><span class="svc-price-num">RM 50</span></div></div></a>
+  </div>
+
+  <div class="sst-note">
+    <span>💡</span>
+    <p><strong>All prices include 8% SST.</strong> 所有价格已包含8% SST · Subject to change.</p>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item" href="../index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item active"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item" href="book.html"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item" href="my-bookings.html"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+<script src="../js/app.js"></script>
+<script>
+function scrollTo(id, tabEl) {
+  document.querySelectorAll('.cat-tab-btn').forEach(t => t.classList.remove('active'));
+  tabEl.classList.add('active');
+  document.getElementById(id).scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function quickBook(name, icon, cn, price) {
+  setState({ service: name, serviceIcon: icon, serviceCn: cn, price, dur: null, date: null, time: null });
+}
+</script>
+</body>
+</html>
+

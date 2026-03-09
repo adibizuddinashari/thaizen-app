@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Your Details — Thaizen</title>
+<link rel="stylesheet" href="../css/app.css">
+<style>
+.booking-pill {
+  display: flex; align-items: center; gap: 13px;
+  background: var(--stone); border-radius: var(--r);
+  padding: 14px 16px; margin-bottom: 16px;
+}
+.bp-icon  { font-size: 1.5rem; flex-shrink: 0; }
+.bp-info  { flex: 1; min-width: 0; }
+.bp-name  { font-size: 0.88rem; color: var(--gold-p); font-weight: 500; margin-bottom: 2px;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bp-meta  { font-size: 0.72rem; color: var(--clay); opacity: 0.7; }
+.bp-price { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--gold); flex-shrink: 0; }
+
+.member-row {
+  display: flex; align-items: center; gap: 12px;
+  background: linear-gradient(135deg, var(--gold-p), #faf2e0);
+  border: 1.5px solid rgba(184,144,42,0.28);
+  border-radius: var(--r); padding: 13px 15px; cursor: pointer;
+}
+.member-row input { accent-color: var(--gold); width: 18px; height: 18px; cursor: pointer; flex-shrink: 0; }
+.member-info h4 { font-size: 0.82rem; color: var(--stone); font-weight: 500; margin-bottom: 2px; }
+.member-info p  { font-size: 0.68rem; color: var(--bark); opacity: 0.65; }
+
+.promo-row { display: flex; gap: 8px; }
+.promo-row input {
+  flex: 1; padding: 12px 14px;
+  border: 1.5px solid var(--mist); border-radius: var(--r-sm);
+  font-family: 'DM Sans', sans-serif; font-size: 0.85rem;
+  color: var(--stone); background: var(--linen); outline: none;
+  text-transform: uppercase; letter-spacing: 0.08em; transition: border-color 0.2s;
+}
+.promo-row input:focus { border-color: var(--gold); background: white; }
+.promo-btn {
+  padding: 0 18px; background: var(--stone); color: var(--gold-p);
+  border: none; border-radius: var(--r-sm); cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 0.72rem;
+  letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;
+  transition: background 0.2s;
+}
+.promo-btn:hover { background: var(--gold); color: var(--dark); }
+.promo-msg { font-size: 0.73rem; min-height: 18px; margin-top: 7px; }
+.promo-ok  { color: var(--ok); }
+.promo-err { color: var(--err); }
+
+.pay-opts { display: flex; flex-direction: column; gap: 8px; }
+.pay-opt {
+  display: flex; align-items: center; gap: 13px;
+  padding: 12px 14px; border-radius: var(--r-sm);
+  border: 1.5px solid var(--mist); cursor: pointer;
+  transition: all 0.18s; background: var(--linen);
+}
+.pay-opt.sel { border-color: var(--gold); background: var(--gold-p); }
+.pay-icon   { font-size: 1.2rem; flex-shrink: 0; }
+.pay-name   { flex: 1; font-size: 0.84rem; color: var(--stone); }
+.pay-radio  {
+  width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--mist); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.pay-opt.sel .pay-radio { border-color: var(--gold); background: var(--gold); }
+.pay-opt.sel .pay-radio::after { content:''; width:6px; height:6px; border-radius:50%; background:white; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="top-bar">
+    <button class="top-bar-back" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      Back
+    </button>
+    <div class="top-bar-title">Your Details</div>
+    <div class="top-bar-action"></div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-pip done"></div>
+      <div class="progress-pip done"></div>
+      <div class="progress-pip active"></div>
+      <div class="progress-pip"></div>
+    </div>
+    <div class="progress-text">Step 3 of 4 — Fill in your details</div>
+  </div>
+
+  <div class="page-body">
+
+    <div class="booking-pill anim-fadeup">
+      <div class="bp-icon" id="bpIcon">🧘</div>
+      <div class="bp-info">
+        <div class="bp-name" id="bpName">—</div>
+        <div class="bp-meta" id="bpMeta">—</div>
+      </div>
+      <div class="bp-price" id="bpPrice">—</div>
+    </div>
+
+    <div class="card anim-fadeup s1">
+      <div class="section-label" style="margin-top:0">Personal Info</div>
+      <div class="field-row">
+        <div class="field"><label>First Name *</label><input type="text" id="fname" placeholder="e.g. Amirah" autocomplete="given-name"></div>
+        <div class="field"><label>Last Name *</label><input type="text" id="lname" placeholder="e.g. Tan" autocomplete="family-name"></div>
+      </div>
+      <div class="field"><label>Mobile Number *</label><input type="tel" id="phone" placeholder="+60 12 345 6789" autocomplete="tel"></div>
+      <div class="field"><label>Email Address *</label><input type="email" id="email" placeholder="you@email.com" autocomplete="email"></div>
+      <div class="field" style="margin-bottom:0"><label>Special Requests</label><input type="text" id="notes" placeholder="Pressure preference, focus areas…"></div>
+    </div>
+
+    <div class="card anim-fadeup s2">
+      <div class="section-label" style="margin-top:0">Promo Code</div>
+      <div class="promo-row">
+        <input type="text" id="promoIn" placeholder="e.g. THAIZEN20">
+        <button class="promo-btn" onclick="applyPromo()">Apply</button>
+      </div>
+      <div class="promo-msg" id="promoMsg"></div>
+    </div>
+
+    <div class="member-row anim-fadeup s2" onclick="toggleMember()">
+      <input type="checkbox" id="memberCb">
+      <div class="member-info">
+        <h4>I'm a Thaizen Member 🌟</h4>
+        <p>Apply member perks and earn loyalty points</p>
+      </div>
+    </div>
+
+    <div class="card anim-fadeup s3">
+      <div class="section-label" style="margin-top:0">Payment Method</div>
+      <div class="pay-opts">
+        <div class="pay-opt sel" onclick="selectPay(this)"><div class="pay-icon">🏦</div><div class="pay-name">Pay at Spa (Walk-in)</div><div class="pay-radio"></div></div>
+        <div class="pay-opt"     onclick="selectPay(this)"><div class="pay-icon">📱</div><div class="pay-name">DuitNow / FPX</div><div class="pay-radio"></div></div>
+        <div class="pay-opt"     onclick="selectPay(this)"><div class="pay-icon">💳</div><div class="pay-name">Credit / Debit Card</div><div class="pay-radio"></div></div>
+        <div class="pay-opt"     onclick="selectPay(this)"><div class="pay-icon">🟢</div><div class="pay-name">Touch 'n Go eWallet</div><div class="pay-radio"></div></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="sticky-footer anim-fadeup s4">
+    <button class="btn btn-gold" onclick="proceed()">Review Booking →</button>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item" href="../index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item" href="services.html"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item active" href="book.html"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item" href="my-bookings.html"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="../js/app.js"></script>
+<script>
+const S = getState();
+
+// Redirect guard
+if (!S.service || !S.date || !S.time) {
+  location.href = 'book.html';
+}
+
+// Populate booking pill
+document.getElementById('bpIcon').textContent = S.serviceIcon || '🧘';
+document.getElementById('bpName').textContent = S.service || '—';
+document.getElementById('bpMeta').textContent = `${S.dur || '—'} · ${formatDate(S.date)} · ${S.time || '—'}`;
+document.getElementById('bpPrice').textContent = `RM ${S.price || '—'}`;
+
+// Restore saved inputs
+if (S.fname) document.getElementById('fname').value = S.fname;
+if (S.lname) document.getElementById('lname').value = S.lname;
+if (S.phone) document.getElementById('phone').value = S.phone;
+if (S.email) document.getElementById('email').value = S.email;
+if (S.notes) document.getElementById('notes').value = S.notes;
+if (S.isMember) document.getElementById('memberCb').checked = true;
+if (S.promo) {
+  document.getElementById('promoIn').value = S.promo;
+  const p = PROMOS[S.promo];
+  if (p) {
+    document.getElementById('promoMsg').className = 'promo-msg promo-ok';
+    document.getElementById('promoMsg').textContent = `✓ ${p.label}`;
+  }
+}
+if (S.payment) {
+  document.querySelectorAll('.pay-opt').forEach(el => {
+    el.classList.toggle('sel', el.querySelector('.pay-name').textContent === S.payment);
+  });
+}
+
+function applyPromo() {
+  const code = document.getElementById('promoIn').value.toUpperCase().trim();
+  const msg  = document.getElementById('promoMsg');
+  if (PROMOS[code]) {
+    const p = PROMOS[code];
+    setState({ promo: code, promoDisc: p.val, promoType: p.type });
+    msg.className = 'promo-msg promo-ok';
+    msg.textContent = `✓ ${p.label} applied!`;
+    showToast('Promo code applied! 🎉');
+  } else if (!code) {
+    setState({ promo: null, promoDisc: 0 });
+    msg.textContent = '';
+  } else {
+    setState({ promo: null, promoDisc: 0 });
+    msg.className = 'promo-msg promo-err';
+    msg.textContent = '✗ Invalid code. Try THAIZEN20';
+  }
+}
+
+function toggleMember() {
+  const cb = document.getElementById('memberCb');
+  cb.checked = !cb.checked;
+  setState({ isMember: cb.checked });
+  if (cb.checked) showToast('Member perks activated ✦ 🌟');
+}
+
+function selectPay(el) {
+  document.querySelectorAll('.pay-opt').forEach(p => p.classList.remove('sel'));
+  el.classList.add('sel');
+  setState({ payment: el.querySelector('.pay-name').textContent });
+}
+
+function proceed() {
+  const fname = document.getElementById('fname').value.trim();
+  const lname = document.getElementById('lname').value.trim();
+  const phone = document.getElementById('phone').value.trim();
+  const email = document.getElementById('email').value.trim();
+  if (!fname) { showToast('Please enter your first name'); return; }
+  if (!phone) { showToast('Please enter your mobile number'); return; }
+  if (!email || !email.includes('@')) { showToast('Please enter a valid email address'); return; }
+  setState({
+    fname, lname, phone, email,
+    notes: document.getElementById('notes').value.trim(),
+    isMember: document.getElementById('memberCb').checked,
+  });
+  location.href = 'confirm.html';
+}
+</script>
+</body>
+</html>
+

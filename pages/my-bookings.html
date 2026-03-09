@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>My Bookings — Thaizen</title>
+<link rel="stylesheet" href="../css/app.css">
+<style>
+.bookings-hero { background: var(--stone); padding: 20px 20px 24px; }
+.bookings-hero-title { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; font-weight: 300; color: var(--gold-p); margin-bottom: 3px; }
+.bookings-hero-sub { font-size: 0.72rem; color: var(--clay); opacity: 0.65; }
+
+.booking-card {
+  background: var(--white); border-radius: var(--r);
+  padding: 0; overflow: hidden; box-shadow: var(--shadow-sm);
+  margin-bottom: 12px;
+}
+.bc-top {
+  display: flex; align-items: center; gap: 13px;
+  padding: 14px 16px; border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+.bc-icon { font-size: 1.5rem; flex-shrink: 0; }
+.bc-info { flex: 1; }
+.bc-name { font-size: 0.88rem; font-weight: 500; color: var(--stone); margin-bottom: 2px; }
+.bc-meta { font-size: 0.72rem; color: var(--bark); opacity: 0.65; }
+.bc-status {
+  font-size: 0.62rem; letter-spacing: 0.08em; text-transform: uppercase;
+  padding: 4px 10px; border-radius: 20px; font-weight: 600; flex-shrink: 0;
+}
+.bc-status.confirmed { background: rgba(74,122,74,0.12); color: var(--ok); }
+.bc-status.pending   { background: rgba(184,144,42,0.15); color: var(--gold); }
+.bc-status.completed { background: var(--mist); color: var(--bark); }
+
+.bc-bottom {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 16px;
+}
+.bc-ref  { font-size: 0.68rem; color: var(--bark); opacity: 0.5; font-family: monospace; letter-spacing: 0.05em; }
+.bc-total { font-family: 'Cormorant Garamond', serif; font-size: 1.05rem; color: var(--gold); }
+
+.empty-state {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 60px 24px; text-align: center;
+}
+.empty-icon   { font-size: 3rem; margin-bottom: 16px; opacity: 0.4; }
+.empty-title  { font-family: 'Cormorant Garamond', serif; font-size: 1.4rem; color: var(--stone); margin-bottom: 8px; }
+.empty-sub    { font-size: 0.82rem; color: var(--bark); opacity: 0.65; margin-bottom: 24px; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="top-bar">
+    <button class="top-bar-back" onclick="history.length>1?history.back():location.href='../index.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      Back
+    </button>
+    <div class="top-bar-title">My Bookings</div>
+    <div class="top-bar-action"></div>
+  </div>
+
+  <div class="bookings-hero">
+    <div class="bookings-hero-title">Your Sessions</div>
+    <div class="bookings-hero-sub">Past and upcoming bookings</div>
+  </div>
+
+  <div class="page-body" id="bookingsBody">
+    <!-- populated by JS -->
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item" href="../index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item" href="services.html"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item" href="book.html"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item active"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="../js/app.js"></script>
+<script>
+function renderBookings() {
+  const body = document.getElementById('bookingsBody');
+  let bookings = [];
+  try { bookings = JSON.parse(localStorage.getItem('thaizen_bookings') || '[]'); } catch {}
+
+  if (bookings.length === 0) {
+    body.innerHTML = `
+      <div class="empty-state anim-fadeup">
+        <div class="empty-icon">🪷</div>
+        <div class="empty-title">No bookings yet</div>
+        <div class="empty-sub">Your confirmed sessions will appear here.<br>Ready to book your first visit?</div>
+        <a href="book.html" class="btn btn-gold" style="max-width:200px;display:inline-block;text-decoration:none">Book Now →</a>
+      </div>`;
+    return;
+  }
+
+  body.innerHTML = `<div class="section-label" style="margin-top:0">Recent Bookings</div>` +
+    bookings.map((b, i) => `
+      <div class="booking-card anim-fadeup" style="animation-delay:${i*0.06}s">
+        <div class="bc-top">
+          <div class="bc-icon">${b.icon || '🧘'}</div>
+          <div class="bc-info">
+            <div class="bc-name">${b.service}</div>
+            <div class="bc-meta">${formatDate(b.date)} · ${b.time} · ${b.dur}</div>
+          </div>
+          <div class="bc-status ${b.status || 'confirmed'}">${b.status || 'Confirmed'}</div>
+        </div>
+        <div class="bc-bottom">
+          <div class="bc-ref">${b.ref}</div>
+          <div class="bc-total">RM ${b.total}</div>
+        </div>
+      </div>`).join('') +
+    `<a href="book.html" class="btn btn-stone" style="text-decoration:none;display:block;margin-top:8px">+ Book Another Session</a>`;
+}
+
+renderBookings();
+</script>
+</body>
+</html>
+

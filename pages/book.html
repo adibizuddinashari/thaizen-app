@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Book — Thaizen</title>
+<link rel="stylesheet" href="../css/app.css">
+<style>
+/* ── STEP TABS ── */
+.step-tabs {
+  display: flex; border-bottom: 1px solid var(--mist);
+  background: var(--white); padding: 0 20px;
+  position: sticky; top: 57px; z-index: 90;
+}
+.step-tab {
+  flex: 1; padding: 13px 0; text-align: center;
+  font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--bark); opacity: 0.5; cursor: pointer;
+  border-bottom: 2px solid transparent; transition: all 0.2s;
+  background: none; border-left: none; border-right: none; border-top: none;
+  font-family: 'DM Sans', sans-serif;
+}
+.step-tab.active { color: var(--gold); opacity: 1; border-bottom-color: var(--gold); }
+.step-tab.done   { color: var(--sage); opacity: 1; border-bottom-color: transparent; }
+
+/* ── SERVICE LIST ── */
+.cat-scroll {
+  display: flex; gap: 8px; padding: 14px 20px;
+  overflow-x: auto; -webkit-overflow-scrolling: touch;
+  background: var(--linen);
+}
+.cat-scroll::-webkit-scrollbar { display: none; }
+.cat-chip {
+  padding: 8px 16px; border-radius: 20px; white-space: nowrap;
+  font-size: 0.72rem; letter-spacing: 0.04em; flex-shrink: 0;
+  border: 1.5px solid var(--mist); background: var(--white);
+  color: var(--bark); cursor: pointer; transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+}
+.cat-chip.active { background: var(--stone); border-color: var(--stone); color: var(--gold-p); }
+
+.svc-list { padding: 0 20px 8px; display: flex; flex-direction: column; gap: 9px; }
+.svc-card {
+  background: var(--white); border-radius: var(--r);
+  padding: 15px; display: flex; gap: 13px; align-items: center;
+  box-shadow: var(--shadow-sm); cursor: pointer;
+  border: 1.5px solid transparent; transition: all 0.2s;
+}
+.svc-card:active, .svc-card.selected { border-color: var(--gold); background: var(--gold-p); }
+.svc-icon {
+  width: 50px; height: 50px; border-radius: 12px;
+  background: var(--gold-p); display: flex; align-items: center;
+  justify-content: center; font-size: 1.4rem; flex-shrink: 0;
+  transition: background 0.2s;
+}
+.svc-card.selected .svc-icon { background: rgba(184,144,42,0.2); }
+.svc-body { flex: 1; min-width: 0; }
+.svc-name { font-size: 0.88rem; font-weight: 500; color: var(--stone); margin-bottom: 2px; }
+.svc-cn   { font-size: 0.68rem; color: var(--bark); opacity: 0.55; margin-bottom: 6px; font-style: italic; }
+.svc-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+.svc-tag  { font-size: 0.6rem; padding: 2px 8px; border-radius: 10px; background: var(--mist); color: var(--bark); }
+.svc-tag.highlight { background: rgba(90,138,90,0.15); color: var(--ok); }
+.svc-price-col { text-align: right; flex-shrink: 0; }
+.svc-from  { font-size: 0.58rem; color: var(--bark); opacity: 0.45; display: block; }
+.svc-price { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--gold); }
+
+/* ── DURATION ── */
+.dur-card {
+  background: var(--white); border-radius: var(--r);
+  padding: 14px; box-shadow: var(--shadow-sm); margin: 0 20px 12px;
+}
+.dur-card-title { font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bark); opacity: 0.5; margin-bottom: 10px; }
+.dur-opts { display: flex; gap: 8px; }
+.dur-opt {
+  flex: 1; padding: 11px 6px; border-radius: 10px; text-align: center;
+  border: 1.5px solid var(--mist); cursor: pointer; transition: all 0.18s;
+  background: var(--linen);
+}
+.dur-opt:hover { border-color: var(--gold); }
+.dur-opt.selected { background: var(--gold-p); border-color: var(--gold); }
+.dur-time  { font-size: 0.78rem; font-weight: 500; color: var(--stone); margin-bottom: 3px; }
+.dur-price { font-family: 'Cormorant Garamond', serif; font-size: 0.95rem; color: var(--gold); }
+
+/* ── CALENDAR ── */
+.cal-card {
+  background: var(--white); border-radius: var(--r);
+  padding: 16px; box-shadow: var(--shadow-sm); margin: 0 20px 12px;
+}
+.cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.cal-month  { font-family: 'Cormorant Garamond', serif; font-size: 1.1rem; color: var(--stone); font-weight: 400; }
+.cal-nav    { display: flex; gap: 8px; }
+.cal-btn {
+  background: var(--mist); border: none; width: 28px; height: 28px;
+  border-radius: 50%; cursor: pointer; font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  color: var(--stone); transition: background 0.2s; font-family: inherit;
+}
+.cal-btn:hover { background: var(--parchment); }
+.cal-grid      { display: grid; grid-template-columns: repeat(7,1fr); gap: 2px; }
+.cal-dname     { text-align: center; font-size: 0.58rem; color: var(--bark); opacity: 0.45; padding: 4px 0; letter-spacing: 0.04em; }
+.cd {
+  text-align: center; padding: 8px 2px; border-radius: 8px;
+  font-size: 0.78rem; color: var(--stone); cursor: pointer;
+  transition: background 0.15s; position: relative;
+}
+.cd:hover:not(.past):not(.empty) { background: var(--gold-p); }
+.cd.today  { font-weight: 600; color: var(--gold); }
+.cd.avail::after { content: '·'; display: block; color: var(--sage); font-size: 1rem; line-height: 0; margin-top: 2px; }
+.cd.selected { background: var(--stone) !important; color: var(--white) !important; border-radius: 50%; font-weight: 600; }
+.cd.past   { color: var(--mist); cursor: default; }
+.cd.empty  { cursor: default; }
+
+/* ── TIME SLOTS ── */
+.time-card {
+  background: var(--white); border-radius: var(--r);
+  padding: 16px; box-shadow: var(--shadow-sm); margin: 0 20px 12px;
+}
+.time-heading { font-size: 0.63rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bark); opacity: 0.5; margin-bottom: 12px; }
+.time-period  { margin-bottom: 12px; }
+.time-period:last-child { margin-bottom: 0; }
+.time-period-lbl { font-size: 0.62rem; color: var(--bark); opacity: 0.45; margin-bottom: 7px; letter-spacing: 0.06em; }
+.time-chips { display: flex; gap: 7px; flex-wrap: wrap; }
+.tc {
+  padding: 9px 13px; border-radius: 8px; font-size: 0.76rem;
+  border: 1.5px solid var(--mist); background: var(--linen);
+  color: var(--stone); cursor: pointer; transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+.tc:hover:not(.full) { border-color: var(--gold); background: var(--gold-p); }
+.tc.selected  { background: var(--stone); border-color: var(--stone); color: var(--white); }
+.tc.full      { opacity: 0.28; cursor: not-allowed; text-decoration: line-through; font-size: 0.68rem; }
+
+/* step panels */
+#panel-service { display: block; }
+#panel-datetime { display: none; }
+.step-panel { padding-bottom: 20px; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="top-bar">
+    <button class="top-bar-back" onclick="history.length>1 ? history.back() : location.href='../index.html'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      Back
+    </button>
+    <div class="top-bar-title">Book a Session</div>
+    <div class="top-bar-action"></div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-pip active" id="pp1"></div>
+      <div class="progress-pip" id="pp2"></div>
+      <div class="progress-pip" id="pp3"></div>
+      <div class="progress-pip" id="pp4"></div>
+    </div>
+    <div class="progress-text" id="progressText">Step 1 of 4 — Choose your treatment</div>
+  </div>
+
+  <div class="step-tabs">
+    <button class="step-tab active" id="tab-svc" onclick="showPanel('service')">① Service</button>
+    <button class="step-tab" id="tab-dt"  onclick="if(S.service) showPanel('datetime')">② Date &amp; Time</button>
+  </div>
+
+  <!-- PANEL: SERVICE -->
+  <div id="panel-service" class="step-panel">
+    <div class="cat-scroll">
+      <div class="cat-chip active" onclick="filterCat(this,'all')">All</div>
+      <div class="cat-chip" onclick="filterCat(this,'basic')">Basic</div>
+      <div class="cat-chip" onclick="filterCat(this,'special')">Special</div>
+      <div class="cat-chip" onclick="filterCat(this,'package')">Packages</div>
+      <div class="cat-chip" onclick="filterCat(this,'other')">Other</div>
+    </div>
+    <div class="svc-list" id="svcList"></div>
+  </div>
+
+  <!-- PANEL: DATE & TIME -->
+  <div id="panel-datetime" class="step-panel" style="display:none">
+    <div style="padding:14px 20px 0">
+      <div class="section-label" style="margin:0 0 8px">Select Duration</div>
+    </div>
+    <div class="dur-card">
+      <div class="dur-card-title">Duration</div>
+      <div class="dur-opts" id="durOpts"></div>
+    </div>
+
+    <div style="padding:0 20px 0">
+      <div class="section-label" style="margin:0 0 8px">Select Date</div>
+    </div>
+    <div class="cal-card">
+      <div class="cal-header">
+        <div class="cal-month" id="calMonth"></div>
+        <div class="cal-nav">
+          <button class="cal-btn" onclick="calPrev()">‹</button>
+          <button class="cal-btn" onclick="calNext()">›</button>
+        </div>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+    </div>
+
+    <div style="padding:0 20px 0">
+      <div class="section-label" id="timeHeading" style="margin:0 0 8px">Available Times</div>
+    </div>
+    <div class="time-card">
+      <div class="time-period">
+        <div class="time-period-lbl">Morning</div>
+        <div class="time-chips">
+          <div class="tc" onclick="pickTime(this,'10:00 AM')">10:00 AM</div>
+          <div class="tc" onclick="pickTime(this,'10:30 AM')">10:30 AM</div>
+          <div class="tc full" title="Fully booked">11:00 AM</div>
+          <div class="tc" onclick="pickTime(this,'11:30 AM')">11:30 AM</div>
+        </div>
+      </div>
+      <div class="time-period">
+        <div class="time-period-lbl">Afternoon</div>
+        <div class="time-chips">
+          <div class="tc" onclick="pickTime(this,'12:00 PM')">12:00 PM</div>
+          <div class="tc" onclick="pickTime(this,'2:00 PM')">2:00 PM</div>
+          <div class="tc" onclick="pickTime(this,'2:30 PM')">2:30 PM</div>
+          <div class="tc full" title="Fully booked">3:30 PM</div>
+          <div class="tc" onclick="pickTime(this,'4:00 PM')">4:00 PM</div>
+        </div>
+      </div>
+      <div class="time-period">
+        <div class="time-period-lbl">Evening</div>
+        <div class="time-chips">
+          <div class="tc" onclick="pickTime(this,'5:00 PM')">5:00 PM</div>
+          <div class="tc" onclick="pickTime(this,'6:00 PM')">6:00 PM</div>
+          <div class="tc full" title="Fully booked">7:00 PM</div>
+          <div class="tc" onclick="pickTime(this,'8:00 PM')">8:00 PM</div>
+          <div class="tc" onclick="pickTime(this,'9:00 PM')">9:00 PM</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sticky-footer">
+    <button class="btn btn-gold" id="mainCta" disabled onclick="handleCta()">
+      Select a treatment to continue
+    </button>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item" href="../index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item" href="services.html"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item active"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item" href="my-bookings.html"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="../js/app.js"></script>
+<script>
+let S = getState();
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth();
+let activePanel = 'service';
+
+// ── RENDER SERVICES ──
+function renderServices(cat) {
+  const list = SERVICES.filter(s => cat === 'all' || s.cat === cat);
+  const el = document.getElementById('svcList');
+  el.innerHTML = list.map(s => {
+    const minP = Math.min(...Object.values(s.prices));
+    const durs = Object.keys(s.prices);
+    const multi = durs.length > 1;
+    const sel = S.service === s.name;
+    return `<div class="svc-card${sel?' selected':''}" onclick="pickService('${s.name}','${s.icon}','${s.cn}',${minP})" data-cat="${s.cat}">
+      <div class="svc-icon">${s.icon}</div>
+      <div class="svc-body">
+        <div class="svc-name">${s.name}</div>
+        <div class="svc-cn">${s.cn}</div>
+        <div class="svc-tags">
+          ${durs.map(d=>`<span class="svc-tag">${d}</span>`).join('')}
+          ${s.badge ? `<span class="svc-tag highlight">${s.badge}</span>` : ''}
+        </div>
+      </div>
+      <div class="svc-price-col">
+        ${multi ? '<span class="svc-from">from</span>' : ''}
+        <div class="svc-price">RM ${minP}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+renderServices('all');
+
+function filterCat(el, cat) {
+  document.querySelectorAll('.cat-chip').forEach(c => c.classList.remove('active'));
+  el.classList.add('active');
+  renderServices(cat);
+  // re-highlight selected
+  if (S.service) {
+    document.querySelectorAll('.svc-card').forEach(c => {
+      c.classList.toggle('selected', c.querySelector('.svc-name').textContent === S.service);
+    });
+  }
+}
+
+function pickService(name, icon, cn, price) {
+  S = setState({ service: name, serviceIcon: icon, serviceCn: cn, price, dur: null, date: null, time: null });
+  document.querySelectorAll('.svc-card').forEach(c =>
+    c.classList.toggle('selected', c.querySelector('.svc-name').textContent === name)
+  );
+  updateCta();
+}
+
+// ── SHOW PANEL ──
+function showPanel(panel) {
+  activePanel = panel;
+  document.getElementById('panel-service').style.display  = panel === 'service'  ? 'block' : 'none';
+  document.getElementById('panel-datetime').style.display = panel === 'datetime' ? 'block' : 'none';
+  document.getElementById('tab-svc').classList.toggle('active', panel === 'service');
+  document.getElementById('tab-dt').classList.toggle('active', panel === 'datetime');
+  if (panel === 'datetime') {
+    renderDurOpts();
+    renderCal();
+    document.getElementById('pp1').className = 'progress-pip done';
+    document.getElementById('pp2').className = 'progress-pip active';
+    document.getElementById('progressText').textContent = 'Step 2 of 4 — Pick your date and time';
+  } else {
+    document.getElementById('pp1').className = 'progress-pip active';
+    document.getElementById('pp2').className = 'progress-pip';
+    document.getElementById('progressText').textContent = 'Step 1 of 4 — Choose your treatment';
+  }
+  updateCta();
+}
+
+// ── DURATION ──
+function renderDurOpts() {
+  const svc = SERVICES.find(s => s.name === S.service);
+  if (!svc) return;
+  const opts = document.getElementById('durOpts');
+  opts.innerHTML = Object.entries(svc.prices).map(([dur, price], i) =>
+    `<div class="dur-opt${(S.dur===dur||(i===0&&!S.dur))?' selected':''}" onclick="pickDur(this,'${dur}',${price})">
+      <div class="dur-time">${dur}</div>
+      <div class="dur-price">RM ${price}</div>
+    </div>`
+  ).join('');
+  if (!S.dur) {
+    const first = Object.entries(svc.prices)[0];
+    S = setState({ dur: first[0], price: first[1] });
+  }
+}
+function pickDur(el, dur, price) {
+  document.querySelectorAll('.dur-opt').forEach(d => d.classList.remove('selected'));
+  el.classList.add('selected');
+  S = setState({ dur, price });
+}
+
+// ── CALENDAR ──
+function renderCal() {
+  document.getElementById('calMonth').textContent = `${MONTHS_LONG[calMonth]} ${calYear}`;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const first = new Date(calYear, calMonth, 1).getDay();
+  const dim   = new Date(calYear, calMonth+1, 0).getDate();
+  const grid  = document.getElementById('calGrid');
+  grid.innerHTML = DAYS_SHORT.map(d=>`<div class="cal-dname">${d}</div>`).join('');
+  for(let i=0;i<first;i++) grid.innerHTML += `<div class="cd empty"></div>`;
+  for(let d=1;d<=dim;d++){
+    const date = new Date(calYear,calMonth,d);
+    const ds   = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const past = date < today;
+    const sel  = S.date === ds;
+    const tod  = date.getTime() === today.getTime();
+    const avail= !past && d%3!==0;
+    grid.innerHTML += `<div class="cd${past?' past':''}${tod?' today':''}${avail?' avail':''}${sel?' selected':''}"
+      ${!past?`onclick="pickDate('${ds}',${calYear},${calMonth},${d})"`:''}>${d}</div>`;
+  }
+}
+function calPrev(){ calMonth--; if(calMonth<0){calMonth=11;calYear--;} renderCal(); }
+function calNext(){ calMonth++; if(calMonth>11){calMonth=0;calYear++;} renderCal(); }
+
+function pickDate(ds, y, m, d){
+  S = setState({ date: ds, time: null });
+  renderCal();
+  const date = new Date(y,m,d);
+  document.getElementById('timeHeading').textContent = `Times — ${DAYS_LONG[date.getDay()]} ${d} ${MONTHS_SHORT[m]}`;
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('selected'));
+  updateCta();
+}
+
+function pickTime(el, time){
+  document.querySelectorAll('.tc').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  S = setState({ time });
+  updateCta();
+  showToast(`${time} selected ✓`);
+}
+
+// ── CTA ──
+function updateCta() {
+  const cta = document.getElementById('mainCta');
+  if (activePanel === 'service') {
+    if (S.service) {
+      cta.textContent = `Next: Pick Date & Time →`;
+      cta.disabled = false;
+    } else {
+      cta.textContent = 'Select a treatment to continue';
+      cta.disabled = true;
+    }
+  } else {
+    if (S.date && S.time) {
+      cta.textContent = 'Continue to Your Details →';
+      cta.disabled = false;
+    } else if (!S.date) {
+      cta.textContent = 'Choose a date to continue';
+      cta.disabled = true;
+    } else {
+      cta.textContent = 'Choose a time to continue';
+      cta.disabled = true;
+    }
+  }
+}
+
+function handleCta() {
+  if (activePanel === 'service') {
+    showPanel('datetime');
+  } else {
+    location.href = 'details.html';
+  }
+}
+
+// ── INIT: restore preselected service from home quick links ──
+if (S.service) {
+  renderServices('all');
+  updateCta();
+  // highlight
+  setTimeout(() => {
+    document.querySelectorAll('.svc-card').forEach(c =>
+      c.classList.toggle('selected', c.querySelector('.svc-name')?.textContent === S.service)
+    );
+  }, 50);
+}
+updateCta();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Review Booking — Thaizen</title>
+<link rel="stylesheet" href="../css/app.css">
+<style>
+.confirm-card { background: var(--white); border-radius: var(--r); overflow: hidden; box-shadow: var(--shadow-sm); margin-bottom: 12px; }
+.cc-head { background: var(--stone); padding: 14px 18px; }
+.cc-head-title { font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; font-weight: 400; color: var(--gold-p); }
+.cc-head-sub   { font-size: 0.68rem; color: var(--clay); opacity: 0.65; margin-top: 2px; }
+.cc-body { padding: 4px 0; }
+.cc-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 10px 18px; border-bottom: 1px solid rgba(0,0,0,0.04);
+}
+.cc-row:last-child { border-bottom: none; }
+.cc-key { font-size: 0.76rem; color: var(--bark); opacity: 0.7; }
+.cc-val { font-size: 0.8rem; color: var(--stone); font-weight: 500; text-align: right; max-width: 58%; line-height: 1.4; }
+.cc-total {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 14px 18px; background: var(--gold-p);
+  border-top: 1px solid rgba(184,144,42,0.2);
+}
+.cc-total-key { font-size: 0.82rem; font-weight: 500; color: var(--stone); }
+.cc-total-val { font-family: 'Cormorant Garamond', serif; font-size: 1.5rem; color: var(--gold); }
+
+.disc-row { color: var(--ok) !important; }
+.disc-chip { background: rgba(74,122,74,0.12); color: var(--ok); font-size: 0.62rem; padding: 2px 8px; border-radius: 10px; font-weight: 500; margin-left: 6px; }
+
+.tc-row {
+  display: flex; gap: 11px; align-items: flex-start;
+  background: var(--white); border-radius: var(--r);
+  padding: 14px; box-shadow: var(--shadow-sm); margin-bottom: 12px;
+}
+.tc-row input { accent-color: var(--gold); margin-top: 2px; flex-shrink: 0; cursor: pointer; }
+.tc-row p { font-size: 0.73rem; color: var(--bark); line-height: 1.65; }
+.tc-row a { color: var(--gold); text-decoration: none; }
+
+.edit-link {
+  font-size: 0.72rem; color: var(--gold); text-decoration: none;
+  margin-left: 8px; opacity: 0.75;
+}
+.edit-link:hover { opacity: 1; }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="top-bar">
+    <button class="top-bar-back" onclick="history.back()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+      Back
+    </button>
+    <div class="top-bar-title">Review &amp; Confirm</div>
+    <div class="top-bar-action"></div>
+  </div>
+
+  <div class="progress-bar">
+    <div class="progress-track">
+      <div class="progress-pip done"></div>
+      <div class="progress-pip done"></div>
+      <div class="progress-pip done"></div>
+      <div class="progress-pip active"></div>
+    </div>
+    <div class="progress-text">Step 4 of 4 — Review and confirm your booking</div>
+  </div>
+
+  <div class="page-body">
+
+    <div class="confirm-card anim-fadeup">
+      <div class="cc-head">
+        <div class="cc-head-title">Booking Summary</div>
+        <div class="cc-head-sub">Thaizen Wellness &amp; Spa · 197 Jalan Magazine, George Town</div>
+      </div>
+      <div class="cc-body">
+        <div class="cc-row">
+          <span class="cc-key">Treatment</span>
+          <span class="cc-val" id="cSvc">—</span>
+        </div>
+        <div class="cc-row">
+          <span class="cc-key">Duration</span>
+          <span class="cc-val" id="cDur">—</span>
+        </div>
+        <div class="cc-row">
+          <span class="cc-key">Date</span>
+          <span class="cc-val" id="cDate">—</span>
+        </div>
+        <div class="cc-row">
+          <span class="cc-key">Time</span>
+          <span class="cc-val" id="cTime">—</span>
+        </div>
+        <div class="cc-row">
+          <span class="cc-key">Guest</span>
+          <span class="cc-val" id="cGuest">—</span>
+        </div>
+        <div class="cc-row">
+          <span class="cc-key">Payment</span>
+          <span class="cc-val" id="cPay">—</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="confirm-card anim-fadeup s1">
+      <div class="cc-body">
+        <div class="cc-row">
+          <span class="cc-key">Subtotal <small style="opacity:0.6">(incl. 8% SST)</small></span>
+          <span class="cc-val" id="cSub">—</span>
+        </div>
+        <div class="cc-row" id="cDiscRow" style="display:none">
+          <span class="cc-key disc-row">Discount</span>
+          <span class="cc-val" id="cDisc">—</span>
+        </div>
+      </div>
+      <div class="cc-total">
+        <span class="cc-total-key">Total Amount</span>
+        <span class="cc-total-val" id="cTotal">—</span>
+      </div>
+    </div>
+
+    <div class="tc-row anim-fadeup s2">
+      <input type="checkbox" id="tcCb" checked>
+      <p>I agree to the <a href="#">Terms &amp; Conditions</a> and <a href="#">Cancellation Policy</a>. Bookings may be cancelled or rescheduled up to 2 hours before your session.</p>
+    </div>
+
+  </div>
+
+  <div class="sticky-footer anim-fadeup s3">
+    <button class="btn btn-gold" onclick="confirmBooking()">✦ Confirm My Booking</button>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item" href="../index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item" href="services.html"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item active" href="book.html"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item" href="my-bookings.html"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script src="../js/app.js"></script>
+<script>
+const S = getState();
+if (!S.service || !S.fname) location.href = 'book.html';
+
+// Populate
+document.getElementById('cSvc').textContent   = S.service || '—';
+document.getElementById('cDur').textContent   = S.dur || '—';
+document.getElementById('cDate').textContent  = formatDateLong(S.date);
+document.getElementById('cTime').textContent  = S.time || '—';
+document.getElementById('cGuest').textContent = `${S.fname} ${S.lname}`.trim() || '—';
+document.getElementById('cPay').textContent   = S.payment || '—';
+document.getElementById('cSub').textContent   = `RM ${S.price}`;
+
+const disc = calcDiscount(S.price, S.promo);
+if (disc > 0) {
+  document.getElementById('cDiscRow').style.display = 'flex';
+  const p = PROMOS[S.promo];
+  document.getElementById('cDisc').innerHTML = `−RM ${disc} <span class="disc-chip">🏷 ${S.promo}</span>`;
+}
+document.getElementById('cTotal').textContent = `RM ${calcTotal(S.price, S.promo)}`;
+
+function confirmBooking() {
+  if (!document.getElementById('tcCb').checked) {
+    showToast('Please agree to the terms to continue');
+    return;
+  }
+  const ref = generateRef();
+  setState({ ref, finalPrice: calcTotal(S.price, S.promo) });
+  location.href = 'success.html';
+}
+</script>
+</body>
+</html>
+

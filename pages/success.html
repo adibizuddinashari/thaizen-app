@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Booking Confirmed — Thaizen</title>
+<link rel="stylesheet" href="../css/app.css">
+<style>
+body { background: var(--dark); }
+.app-shell { background: var(--dark); }
+
+.success-body {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; padding: 48px 24px 32px;
+  text-align: center;
+}
+.success-ring {
+  width: 100px; height: 100px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold), var(--clay));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2.6rem; margin-bottom: 24px;
+  box-shadow: 0 0 0 14px rgba(184,144,42,0.1), 0 0 0 28px rgba(184,144,42,0.05);
+  animation: pop 0.6s cubic-bezier(0.22,1,0.36,1) both 0.1s;
+}
+.success-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 2.2rem; font-weight: 300; color: var(--gold-p);
+  margin-bottom: 8px;
+}
+.success-sub {
+  font-size: 0.84rem; color: var(--clay); opacity: 0.7;
+  line-height: 1.75; margin-bottom: 28px; max-width: 300px;
+}
+
+.ref-box {
+  width: 100%; background: var(--dark3);
+  border: 1px dashed rgba(184,144,42,0.35);
+  border-radius: var(--r); padding: 18px 24px;
+  margin-bottom: 16px;
+}
+.ref-lbl  { font-size: 0.62rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--clay); opacity: 0.5; margin-bottom: 6px; }
+.ref-code { font-family: 'Cormorant Garamond', serif; font-size: 2rem; color: var(--gold); letter-spacing: 0.14em; }
+
+.detail-grid {
+  width: 100%; background: var(--dark3);
+  border-radius: var(--r); overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.05);
+  margin-bottom: 20px;
+}
+.dg-row {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.dg-row:last-child { border-bottom: none; }
+.dg-key { font-size: 0.72rem; color: var(--clay); opacity: 0.55; }
+.dg-val { font-size: 0.78rem; color: var(--gold-p); font-weight: 400; text-align: right; max-width: 60%; }
+
+.email-line {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 24px; text-align: left;
+}
+.email-line p { font-size: 0.74rem; color: var(--clay); opacity: 0.6; line-height: 1.6; }
+.email-line strong { color: var(--gold-l); opacity: 1; }
+
+.action-stack { width: 100%; display: flex; flex-direction: column; gap: 10px; }
+
+.bottom-nav {
+  background: rgba(26,21,16,0.97);
+  border-top: 1px solid rgba(184,144,42,0.1);
+}
+.bn-item { color: rgba(255,255,255,0.28); }
+.bn-item.active { color: var(--gold); }
+</style>
+</head>
+<body>
+<div class="app-shell">
+
+  <div class="success-body">
+    <div class="success-ring anim-pop">🪷</div>
+    <div class="success-title anim-fadeup s1">You're Booked!</div>
+    <div class="success-sub anim-fadeup s2">
+      Your session has been confirmed. We look forward to welcoming you to Thaizen.
+    </div>
+
+    <div class="ref-box anim-fadeup s2">
+      <div class="ref-lbl">Booking Reference</div>
+      <div class="ref-code" id="refCode">TZ-XXXXXX</div>
+    </div>
+
+    <div class="detail-grid anim-fadeup s3">
+      <div class="dg-row"><span class="dg-key">Treatment</span><span class="dg-val" id="dSvc">—</span></div>
+      <div class="dg-row"><span class="dg-key">Date &amp; Time</span><span class="dg-val" id="dDT">—</span></div>
+      <div class="dg-row"><span class="dg-key">Duration</span><span class="dg-val" id="dDur">—</span></div>
+      <div class="dg-row"><span class="dg-key">Guest</span><span class="dg-val" id="dGuest">—</span></div>
+      <div class="dg-row"><span class="dg-key">Total</span><span class="dg-val" id="dTotal" style="color:var(--gold);font-family:'Cormorant Garamond',serif;font-size:1.1rem">—</span></div>
+    </div>
+
+    <div class="email-line anim-fadeup s3">
+      <span style="font-size:1.2rem">📧</span>
+      <p>A confirmation has been sent to <strong id="dEmail">your email</strong></p>
+    </div>
+
+    <div class="action-stack anim-fadeup s4">
+      <button class="btn btn-gold" onclick="addCal()">📅 Add to Calendar</button>
+      <button class="btn btn-outline" onclick="share()">↗ Share Booking</button>
+      <button class="btn btn-ghost" onclick="goHome()">← Back to Home</button>
+    </div>
+  </div>
+
+  <nav class="bottom-nav">
+    <a class="bn-item" href="../index.html"><div class="bn-icon">🏠</div>Home</a>
+    <a class="bn-item" href="services.html"><div class="bn-icon">🌿</div>Services</a>
+    <a class="bn-item" href="book.html"><div class="bn-icon">🗓️</div>Book</a>
+    <a class="bn-item active" href="my-bookings.html"><div class="bn-icon">📋</div>Bookings</a>
+  </nav>
+</div>
+
+<script src="../js/app.js"></script>
+<script>
+const S = getState();
+if (!S.ref) {
+  // Generate ref if landed directly
+  setState({ ref: generateRef(), finalPrice: S.price });
+}
+const ref = S.ref || generateRef();
+
+document.getElementById('refCode').textContent   = ref;
+document.getElementById('dSvc').textContent     = S.service || '—';
+document.getElementById('dDT').textContent      = `${formatDate(S.date)} · ${S.time || '—'}`;
+document.getElementById('dDur').textContent     = S.dur || '—';
+document.getElementById('dGuest').textContent   = `${S.fname || ''} ${S.lname || ''}`.trim() || '—';
+document.getElementById('dTotal').textContent   = `RM ${S.finalPrice || S.price || '—'}`;
+document.getElementById('dEmail').textContent   = S.email || 'your email';
+
+// Save to mock bookings list
+try {
+  const history = JSON.parse(localStorage.getItem('thaizen_bookings') || '[]');
+  history.unshift({
+    ref, service: S.service, icon: S.serviceIcon,
+    date: S.date, time: S.time, dur: S.dur,
+    guest: `${S.fname} ${S.lname}`.trim(),
+    total: S.finalPrice || S.price,
+    status: 'confirmed', createdAt: new Date().toISOString()
+  });
+  localStorage.setItem('thaizen_bookings', JSON.stringify(history.slice(0, 20)));
+} catch {}
+
+function addCal() { showToast('📅 Calendar integration — coming in Phase 2!'); }
+function share()  {
+  if (navigator.share) {
+    navigator.share({ title: 'My Thaizen Booking', text: `Booking ref: ${ref} — ${S.service} on ${formatDate(S.date)} at ${S.time}` });
+  } else { showToast('Copy your ref: ' + ref); }
+}
+function goHome() { clearState(); location.href = '../index.html'; }
+</script>
+</body>
+</html>
